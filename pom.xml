@@ -19,10 +19,10 @@
 
     <modules>
         <module>gateway</module>
+        <module>fronts/pegasus-portal</module>
+        <module>fronts/front-b</module>
         <module>services/service-a</module>
         <module>services/service-b</module>
-        <module>fronts/front-a</module>
-        <module>fronts/front-b</module>
     </modules>
 
     <dependencyManagement>

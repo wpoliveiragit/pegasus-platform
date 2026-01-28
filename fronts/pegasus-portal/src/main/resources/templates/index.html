@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Front A</title>
+</head>
+
+<body>
+
+<h1>pegasus-portal</h1>
+<a href="/pegasus-portal/call-service">Chamar Service A</a>
+<br/><br/>
+<p th:if="${response}">Resposta do Service A:<span th:text="${response}"></span></p>
+
+</body>
+</html>
