@@ -1,2 +1,4 @@
-br\com\pegasus\portal\app\controller\FrontAHomeController.class
-br\com\pegasus\portal\app\FrontAStartApplication.class
+br\com\pegasus\portal\app\controller\ProductsController.class
+br\com\pegasus\portal\app\type\ProductRequest.class
+br\com\pegasus\portal\app\controller\SitelController.class
+br\com\pegasus\portal\app\PortalStartApplication.class
