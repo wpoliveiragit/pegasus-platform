@@ -1,11 +1,8 @@
 package br.com.pegasus.portal.app.controller;
 
-import br.com.pegasus.portal.app.type.ProductRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,6 +17,16 @@ public class SitelController {
   @GetMapping
   public String home() {
     return "index";
+  }
+
+  @GetMapping("/terms")
+  public String terms() {
+    return "terms";
+  }
+
+  @GetMapping("/license")
+  public String license() {
+    return "license";
   }
 
   @GetMapping("/call-service")

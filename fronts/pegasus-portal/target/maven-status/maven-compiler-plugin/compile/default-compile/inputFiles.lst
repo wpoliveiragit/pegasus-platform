@@ -1,4 +1,6 @@
 C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\controller\SitelController.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductRequestType.java
 C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\PortalStartApplication.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductPageResponseType.java
 C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\controller\ProductsController.java
-C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductRequest.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\PaginationResponse.java

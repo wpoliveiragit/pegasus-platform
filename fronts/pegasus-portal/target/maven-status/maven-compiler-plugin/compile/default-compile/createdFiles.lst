@@ -1,4 +1,6 @@
+br\com\pegasus\portal\app\type\PaginationResponse.class
 br\com\pegasus\portal\app\controller\ProductsController.class
-br\com\pegasus\portal\app\type\ProductRequest.class
 br\com\pegasus\portal\app\controller\SitelController.class
+br\com\pegasus\portal\app\type\ProductRequestType.class
 br\com\pegasus\portal\app\PortalStartApplication.class
+br\com\pegasus\portal\app\type\ProductPageResponseType.class
