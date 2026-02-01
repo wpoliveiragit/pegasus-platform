@@ -8,14 +8,25 @@
         body { margin:0; font-family:Arial; background:#f8fafc; }
         header, footer { background:#1e293b; color:#fff; padding:15px; }
         main { padding:20px; }
+
         table { width:100%; border-collapse:collapse; background:#fff; }
         th, td { border:1px solid #d1d5db; padding:4px 8px; font-size:14px; }
         th { background:#e5e7eb; }
-        button { padding:6px 12px; }
+
+        button { padding:6px 12px; cursor:pointer; }
+
         .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
         .card { background:#fff; padding:15px; border:1px solid #e5e7eb; }
+
         .search-row { display:flex; gap:10px; }
-        .pagination { margin-top:10px; display:flex; justify-content:center; gap:10px; }
+
+        .pagination {
+            margin-top:12px;
+            display:flex;
+            justify-content:center;
+            gap:10px;
+            align-items:center;
+        }
 
         .pagination a, .pagination span {
             padding:4px 10px;
@@ -25,7 +36,10 @@
             background:#fff;
         }
 
-        .pagination span { background:#e5e7eb; }
+        .pagination span {
+            background:#e5e7eb;
+            font-weight:bold;
+        }
 
         .search-table {
             width:100%;
@@ -38,9 +52,7 @@
             padding:6px;
         }
 
-        .search-table th {
-            background:#f1f5f9;
-        }
+        .search-table th { background:#f1f5f9; }
 
         .search-table input {
             width:100%;
@@ -65,10 +77,15 @@
 
     <h1>Produtos</h1>
 
+    <!-- ===== TABELA DE PRODUTOS ===== -->
     <table>
         <thead>
         <tr>
-            <th>ID</th><th>Nome</th><th>Preço</th><th>Qtd</th><th>Ações</th>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Qtd</th>
+            <th>Ações</th>
         </tr>
         </thead>
         <tbody>
@@ -87,10 +104,12 @@
         </tbody>
     </table>
 
+    <!-- ===== PAGINAÇÃO (6 ITENS) ===== -->
     <div class="pagination">
+
         <a th:if="${pageResponse.pagination.previous}"
-           th:href="@{/products(page=${pageResponse.pagination.page - 1})}">
-            Anterior
+           th:href="@{/products(page=${pageResponse.pagination.page - 1}, size=6)}">
+            ◀ Anterior
         </a>
 
         <span>
@@ -99,9 +118,10 @@
         </span>
 
         <a th:if="${pageResponse.pagination.next}"
-           th:href="@{/products(page=${pageResponse.pagination.page + 1})}">
-            Próxima
+           th:href="@{/products(page=${pageResponse.pagination.page + 1}, size=6)}">
+            Próxima ▶
         </a>
+
     </div>
 
     <hr>
@@ -119,7 +139,6 @@
                 </div>
             </form>
 
-            <!-- ===== UPDATE ===== -->
             <form th:if="${selectedProduct != null}"
                   th:action="@{/products/update}" method="post">
 
@@ -137,16 +156,12 @@
                     <tr>
                         <td>ID</td>
                         <td th:text="${selectedProduct.id}"></td>
-                        <td>
-                            <input th:value="${selectedProduct.id}" disabled>
-                        </td>
+                        <td><input th:value="${selectedProduct.id}" disabled></td>
                     </tr>
                     <tr>
                         <td>Nome</td>
                         <td th:text="${selectedProduct.name}"></td>
-                        <td>
-                            <input name="name" th:value="${selectedProduct.name}">
-                        </td>
+                        <td><input name="name" th:value="${selectedProduct.name}"></td>
                     </tr>
                     <tr>
                         <td>Preço</td>
@@ -174,13 +189,11 @@
                 </div>
             </form>
 
-            <!-- ===== DELETE (FORM SEPARADO) ===== -->
             <form th:if="${selectedProduct != null}"
                   th:action="@{/products/delete}" method="post">
                 <input type="hidden" name="id" th:value="${selectedProduct.id}">
                 <button type="submit">Excluir</button>
             </form>
-
         </div>
 
         <!-- ===== NOVO ===== -->
