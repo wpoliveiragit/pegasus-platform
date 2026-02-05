@@ -104,11 +104,14 @@
         </tbody>
     </table>
 
-    <!-- ===== PAGINAÇÃO (6 ITENS) ===== -->
+    <!-- ===== PAGINAÇÃO (HTML CONTROLA size=6) ===== -->
     <div class="pagination">
 
         <a th:if="${pageResponse.pagination.previous}"
-           th:href="@{/products(page=${pageResponse.pagination.page - 1}, size=6)}">
+           th:href="@{/products(
+                page=${pageResponse.pagination.page - 1},
+                size=6
+           )}">
             ◀ Anterior
         </a>
 
@@ -118,7 +121,10 @@
         </span>
 
         <a th:if="${pageResponse.pagination.next}"
-           th:href="@{/products(page=${pageResponse.pagination.page + 1}, size=6)}">
+           th:href="@{/products(
+                page=${pageResponse.pagination.page + 1},
+                size=6
+           )}">
             Próxima ▶
         </a>
 
@@ -135,6 +141,8 @@
             <form method="get" th:action="@{/products/search}">
                 <div class="search-row">
                     <input type="number" name="id" placeholder="ID" required>
+                    <input type="hidden" name="page" value="0">
+                    <input type="hidden" name="size" value="6">
                     <button>Buscar</button>
                 </div>
             </form>

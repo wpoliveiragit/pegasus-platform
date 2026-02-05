@@ -18,4 +18,10 @@ public class ProductRequestType {
     this.quantity = quantity;
   }
 
+  public ProductRequestType(String name, Float price, Integer quantity) {
+    this.name = name;
+    this.price = price;
+    this.quantity = quantity;
+  }
+
 }

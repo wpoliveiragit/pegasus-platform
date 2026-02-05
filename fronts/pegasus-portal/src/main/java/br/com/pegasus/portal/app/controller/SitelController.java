@@ -32,7 +32,7 @@ public class SitelController {
   @GetMapping("/call-service")
   public String callServiceA(RedirectAttributes redirectAttributes) {
     System.out.println("pegasus-portal:in");
-    String response = restTemplate.getForObject(SERVICE_A_API + "/hello", String.class);
+    String response = restTemplate.getForObject("http://gateway:8080/service-a/hello", String.class);
     redirectAttributes.addFlashAttribute("response", response);
     return "redirect:/";
   }
