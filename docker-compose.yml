@@ -5,7 +5,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - service-a
+      - pegasus-api-products
       - service-b
 
   pegasus-portal:
@@ -22,12 +22,12 @@ services:
     depends_on:
       - gateway
 
-  service-a:
-    build: ./services/service-a
+  pegasus-api-products:
+    build: ./api/pegasus-api-products
     ports:
       - "8083:8080"
 
   service-b:
-    build: ./services/service-b
+    build: ./api/service-b
     ports:
       - "8084:8080"

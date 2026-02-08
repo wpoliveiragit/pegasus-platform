@@ -9,13 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="pegasus-portal" />
         <module name="front-b" />
-        <module name="service-a" />
         <module name="gateway" />
         <module name="service-b" />
+        <module name="pegasus-api-products" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="front-a" target="1.8" />
+      <module name="service-a" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

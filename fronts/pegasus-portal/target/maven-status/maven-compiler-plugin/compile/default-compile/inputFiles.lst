@@ -1,6 +1,12 @@
-C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\controller\SitelController.java
 C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductRequestType.java
 C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\PortalStartApplication.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\controller\PortalFrontController.java
 C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductPageResponseType.java
-C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\controller\ProductsController.java
-C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\PaginationResponse.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\controller\ProductsFrontController.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ExceptionResponseType.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\test\Main.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductUpdateRequestType.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\util\MethodUtil.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductCreateRequestType.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\PaginationResponseType.java
+C:\dev\workspace\pegasus-platform\fronts\pegasus-portal\src\main\java\br\com\pegasus\portal\app\type\ProductType.java

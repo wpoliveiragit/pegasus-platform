@@ -1,0 +1,143 @@
+{
+  "info": {
+    "_postman_id": "9aa8474b-b823-42e8-9a9c-01693ad74d6a",
+    "name": "pegasus-platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8811274"
+  },
+  "item": [
+    {
+      "name": "pegasus-products",
+      "item": [
+        {
+          "name": "get-one",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http:\\\\localhost:8080\\products\\21",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "products",
+                "21"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/products?page=0&size=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "type": "text"
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"banana\",\r\n    \"price\":10.0,\r\n    \"quantity\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"banana\",\r\n    \"price\":10.0,\r\n    \"quantity\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/products/21",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "products",
+                "21"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/products/21",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "products",
+                "21"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -5,10 +5,10 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: service-a
-          uri: http://service-a:8080
+        - id: pegasus-api-products
+          uri: http://pegasus-api-products:8080
           predicates:
-            - Path=/service-a/**
+            - Path=/pegasus-api-products/**
           filters:
             - StripPrefix=1
 
