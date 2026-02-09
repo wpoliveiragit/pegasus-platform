@@ -4,7 +4,7 @@ import br.com.pegasus.api.products.model.PageableModel;
 import br.com.pegasus.api.products.model.ProductModel;
 import br.com.pegasus.api.products.model.ProductPageModel;
 import br.com.pegasus.api.products.repository.entity.ProductEntity;
-import br.com.pegasus.api.products.type.PaginationResponseType;
+import br.com.pegasus.api.products.type.PaginationType;
 import br.com.pegasus.api.products.type.ProductCreateRequestType;
 import br.com.pegasus.api.products.type.ProductPageResponseType;
 import br.com.pegasus.api.products.type.ProductResponseType;
@@ -15,7 +15,7 @@ public final class ProductMapper {
   //type
   public static ProductPageResponseType toType(ProductPageModel outModel) {
     PageableModel pagM = outModel.getPagination();
-    return new ProductPageResponseType(new PaginationResponseType(//
+    return new ProductPageResponseType(new PaginationType(//
         pagM.getPage(),//
         pagM.getSize(),//
         pagM.getElements(),//

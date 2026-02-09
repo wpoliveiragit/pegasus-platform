@@ -11,7 +11,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class ProductPageResponseType {
-  private PaginationResponseType pagination;
+
+  private PaginationType pagination;
   private List<ProductResponseType> products;
 
   @Override

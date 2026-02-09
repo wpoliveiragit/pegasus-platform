@@ -2,11 +2,11 @@ br\com\pegasus\portal\app\type\ProductUpdateRequestType.class
 br\com\pegasus\portal\app\type\ProductRequestType.class
 br\com\pegasus\portal\app\controller\ProductsFrontController.class
 br\com\pegasus\portal\app\type\ProductPageResponseType.class
-br\com\pegasus\portal\app\type\PaginationResponseType.class
 br\com\pegasus\portal\app\util\MethodUtil.class
 br\com\pegasus\portal\app\type\ProductType.class
 br\com\pegasus\portal\app\type\ExceptionResponseType.class
 br\com\pegasus\portal\app\test\Main.class
+br\com\pegasus\portal\app\type\PaginationType.class
 br\com\pegasus\portal\app\PortalStartApplication.class
 br\com\pegasus\portal\app\controller\PortalFrontController.class
 br\com\pegasus\portal\app\type\ProductCreateRequestType.class

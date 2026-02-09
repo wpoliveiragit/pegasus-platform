@@ -27,12 +27,11 @@ public class AppAdviceController {
     return createResponse(ex.getHttpStatus(), ex.getMessage());
   }
 
-  public ResponseEntity<ExceptionResponseType> createResponse(HttpStatus httpStatus, String detail) {
-    ExceptionResponseType response = ExceptionResponseType.builder()//
-        .code(httpStatus.value())//
-        .message(httpStatus.getReasonPhrase())//
-        .detail(detail)//
-        .build();
+  private ResponseEntity<ExceptionResponseType> createResponse(HttpStatus httpStatus, String detail) {
+    var response = new ExceptionResponseType();
+    response.setCode(httpStatus.value());
+    response.setMessage(httpStatus.getReasonPhrase());
+    response.setDetail(detail);
     return new ResponseEntity<>(response, httpStatus);
   }
 

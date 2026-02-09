@@ -38,7 +38,7 @@ public class ServiceAController {
   @GetMapping({"/up", "/up/"})
   public String up() {
     log.info("up");
-    return "{ up : OK }";
+    return "{ \"up\" : \"OK\" }";
   }
 
   @GetMapping({"/{id}","/{id}/"})

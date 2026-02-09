@@ -1,10 +1,11 @@
 package br.com.pegasus.portal.app.controller;
 
-import br.com.pegasus.portal.app.type.PaginationResponseType;
+import br.com.pegasus.portal.app.type.PaginationType;
 import br.com.pegasus.portal.app.type.ProductCreateRequestType;
 import br.com.pegasus.portal.app.type.ProductPageResponseType;
 import br.com.pegasus.portal.app.type.ProductType;
 import br.com.pegasus.portal.app.type.ProductUpdateRequestType;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,9 +34,14 @@ public class ProductsFrontController {
 
   private final List<ProductType> products = new ArrayList<>();
   private final AtomicLong idGenerator = new AtomicLong(1);
-  private final RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate;
 
-  public ProductsFrontController() {
+  public ProductsFrontController(RestTemplateBuilder builder) {
+    restTemplate = builder
+        .setConnectTimeout(Duration.ofSeconds(5))   // timeout conexão
+        .setReadTimeout(Duration.ofSeconds(5))      // timeout leitura
+        .build();
+
     Random random = new Random(1);
     IntStream.rangeClosed(1, 20)
         .forEach(i ->
@@ -51,31 +60,13 @@ public class ProductsFrontController {
     }
   }
 
-  /* ===== LIST ===== */
   @GetMapping
   public String list(
       Model model,
       @RequestParam(value = "page", defaultValue = "0") Integer page,
       @RequestParam(value = "size", defaultValue = "6") Integer size) {
 
-    this.getAllApi(page, size);
-
-    int total = products.size();
-    int pages = (int) Math.ceil((double) total / size);
-
-    int from = Math.min(page * size, total);
-    int to = Math.min(from + size, total);
-
-    PaginationResponseType pagination = new PaginationResponseType();
-    pagination.setPage(page);
-    pagination.setSize(size);
-    pagination.setElements((long) total);
-    pagination.setPages(pages);
-    pagination.setPrevious(page > 0);
-    pagination.setNext(page < pages - 1);
-
-    model.addAttribute("pageResponse", new ProductPageResponseType(pagination, products.subList(from, to)));
-
+    model.addAttribute("pageResponse", this.getAllApi(page, size));
     return "products";
   }
 
@@ -138,16 +129,24 @@ public class ProductsFrontController {
     return "redirect:/products";
   }
 
-  private ResponseEntity<ProductPageResponseType> getAllApi(Integer page, Integer size) {
-    ResponseEntity<ProductPageResponseType> response =
-        restTemplate.getForEntity(
-            baseUrl + "?page={page}&size={size}",
-            ProductPageResponseType.class,
-            page,
-            size
-        );
-    System.out.println("get-all: " + response.getBody());
-    return response;
+  private ProductPageResponseType getAllApi(Integer page, Integer size) {
+    try {
+      ProductPageResponseType response = restTemplate.getForEntity(
+          baseUrl + "?page={page}&size={size}",
+          ProductPageResponseType.class,
+          page,
+          size
+      ).getBody();
+      System.out.println("getAllApi::ok");
+      return response;
+    } catch (HttpClientErrorException | HttpServerErrorException ex) {
+      System.out.println("getAllApi::fail");
+      System.out.println("getAllApi::" + ex.getMessage());
+      return new ProductPageResponseType(
+          new PaginationType(1, 0, 0L, 0, false, false),
+          new ArrayList<>()
+      );
+    }
   }
 
   private ResponseEntity<ProductType> getOneApi(Long id) {
@@ -170,15 +169,15 @@ public class ProductsFrontController {
   }
 
   private ResponseEntity<ProductType> updateApi(Long id, String name, Float price, Integer quantity) {
-      ProductUpdateRequestType request = new ProductUpdateRequestType();
-      request.setName(name);
-      request.setPrice(price);
-      request.setQuantity(quantity);
+    ProductUpdateRequestType request = new ProductUpdateRequestType();
+    request.setName(name);
+    request.setPrice(price);
+    request.setQuantity(quantity);
 
-      ResponseEntity<ProductType> response = restTemplate.exchange(baseUrl + "/{id}",//
-          HttpMethod.PUT, new HttpEntity<>(request), ProductType.class, id);
-      System.out.println("update: " + response.getBody());
-      return response;
+    ResponseEntity<ProductType> response = restTemplate.exchange(baseUrl + "/{id}",//
+        HttpMethod.PUT, new HttpEntity<>(request), ProductType.class, id);
+    System.out.println("update: " + response.getBody());
+    return response;
   }
 
   private void deleteApi(Long id) {
