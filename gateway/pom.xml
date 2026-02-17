@@ -13,7 +13,14 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>gateway</artifactId>
+    <name>pegasus-portal</name>
+    <description>API RESTful gerada com OpenAPI Generator</description>
+
+
+    <artifactId>gateway</artifactId><!-- mudar este nome -->
+    <groupId>br.com.pegasus.gateway</groupId>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>

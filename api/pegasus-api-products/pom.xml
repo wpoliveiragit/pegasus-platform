@@ -17,7 +17,6 @@
 
     <properties>
         <java.version>17</java.version>
-        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     </properties>
 
     <dependencies>
@@ -34,6 +33,10 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <dependency><!-- ajuste de serialização de 'java.time.Instant' -->
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
 
         <dependency>
             <!-- Banco de dados H2: útil para testes, pois oferece DB em memória e console web -->
@@ -46,15 +49,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
-        <dependency>
-            <!-- Reduzir boilerplate (códigos padrões) -->
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <scope>provided</scope>
-        </dependency>
-
 
     </dependencies>
 
