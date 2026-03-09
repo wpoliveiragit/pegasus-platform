@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="pegasus-portal" />
+        <module name="pegasus-gateway" />
         <module name="front-b" />
         <module name="gateway" />
         <module name="service-b" />
@@ -22,12 +23,13 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="front-a" options="" />
-      <module name="front-b" options="-parameters" />
+      <module name="front-b" options="" />
       <module name="gateway" options="-parameters" />
-      <module name="pegasus-api-products" options="-parameters" />
-      <module name="pegasus-portal" options="-parameters" />
+      <module name="pegasus-api-products" options="" />
+      <module name="pegasus-gateway" options="" />
+      <module name="pegasus-portal" options="" />
       <module name="service-a" options="" />
-      <module name="service-b" options="-parameters" />
+      <module name="service-b" options="" />
     </option>
   </component>
 </project>

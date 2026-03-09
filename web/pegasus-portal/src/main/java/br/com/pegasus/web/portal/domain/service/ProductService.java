@@ -4,16 +4,12 @@ import br.com.pegasus.web.portal.domain.adapter.RestTemplateAdapter;
 import br.com.pegasus.web.portal.domain.core.ProductFrontCore;
 import br.com.pegasus.web.portal.domain.model.PageModel;
 import br.com.pegasus.web.portal.domain.model.ProductModel;
-import br.com.pegasus.web.portal.domain.model.ResponseModel;
 import br.com.pegasus.web.portal.domain.port.ProductServicePort;
 import br.com.pegasus.web.portal.domain.type.ProductPageResponseType;
 import br.com.pegasus.web.portal.domain.type.ProductResponseType;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.time.Duration;
 
 @Log4j2
 @Service
@@ -21,12 +17,8 @@ public class ProductService implements ProductServicePort {
 
   public final ProductServicePort core;
 
-  public ProductService(RestTemplateAdapter restTemplate, RestTemplateBuilder builder) {
-    RestTemplate build = builder
-        .setConnectTimeout(Duration.ofSeconds(5))   // timeout conexão
-        .setReadTimeout(Duration.ofSeconds(5))      // timeout leitura
-        .build();
-    this.core = new ProductFrontCore(build, restTemplate);
+  public ProductService(RestTemplateAdapter restTemplate) {
+    this.core = new ProductFrontCore(restTemplate);
   }
 
   @Override

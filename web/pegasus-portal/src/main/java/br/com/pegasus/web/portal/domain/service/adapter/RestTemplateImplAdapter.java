@@ -18,11 +18,7 @@ import java.util.function.Supplier;
 @Component
 public class RestTemplateImplAdapter implements RestTemplateAdapter {
 
-  private final RestTemplate restTemplate;
-
-  public RestTemplateImplAdapter(RestTemplate builder) {
-    this.restTemplate = builder;
-  }
+  private final RestTemplate restTemplate = new RestTemplate();
 
   @Override
   public <R, E> ResponseModel<R, E> getForEntity(String url, Class<R> successResponse, Class<E> failResponse, Object... uriVariables) {

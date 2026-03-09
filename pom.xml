@@ -6,13 +6,6 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.2</version>
-        <relativePath/>
-    </parent>
-
     <groupId>com.company</groupId>
     <artifactId>pegasus-platform</artifactId>
     <version>1.0.0</version>
@@ -20,8 +13,11 @@
 
     <properties>
         <java.version>17</java.version>
-        <spring.cloud.version>2024.0.0</spring.cloud.version>
+<!--        <spring.cloud.version>2024.0.0</spring.cloud.version>-->
+        <spring.cloud.version>2023.0.1</spring.cloud.version>
         <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <spring.boot.version>3.2.1</spring.boot.version>
+
     </properties>
 
     <modules>
@@ -49,6 +45,16 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- Spring Boot BOM -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- Spring Cloud BOM -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -57,6 +63,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -67,6 +74,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -74,15 +82,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven.compiler.plugin.version}</version>
-                    <configuration>
-                        <release>${java.version}</release>
-                    </configuration>
                 </plugin>
 
             </plugins>

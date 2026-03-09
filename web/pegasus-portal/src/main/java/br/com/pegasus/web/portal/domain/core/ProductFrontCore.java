@@ -4,6 +4,7 @@ import br.com.pegasus.web.portal.domain.adapter.RestTemplateAdapter;
 import br.com.pegasus.web.portal.domain.model.PageModel;
 import br.com.pegasus.web.portal.domain.model.ProductModel;
 import br.com.pegasus.web.portal.domain.port.ProductServicePort;
+import br.com.pegasus.web.portal.domain.service.adapter.RestTemplateImplAdapter;
 import br.com.pegasus.web.portal.domain.type.ExceptionResponseModel;
 import br.com.pegasus.web.portal.domain.type.ProductPageResponseModel;
 import br.com.pegasus.web.portal.domain.type.ProductPageResponseType;
