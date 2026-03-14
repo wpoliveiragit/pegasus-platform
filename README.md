@@ -1,4 +1,10 @@
 # pegasus-platform
+
+# atualizar o docker
+```shell
+./pegasus_net-restart_all.sh
+```
+
 ## Tarefas
 - Pegasus-api-product
   - Remover o endpoint `up` quando a conexão entre o back e o front estiver em 100%

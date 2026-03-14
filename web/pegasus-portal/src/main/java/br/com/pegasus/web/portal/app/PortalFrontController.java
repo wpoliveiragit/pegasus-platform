@@ -29,12 +29,4 @@ public class PortalFrontController {
     return "license";
   }
 
-  @GetMapping("/call-service")
-  public String callServiceA(RedirectAttributes redirectAttributes) {
-    System.out.println("pegasus-portal:in");
-    String response = restTemplate.getForObject("http://gateway:8080/pegasus-api-products/products/up", String.class);
-    redirectAttributes.addFlashAttribute("response", response);
-    return "redirect:/";
   }
-
-}

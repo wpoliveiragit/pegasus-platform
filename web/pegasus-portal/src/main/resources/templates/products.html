@@ -69,9 +69,7 @@
 
 <body>
 
-<header>
-    <b>Pegasus</b><br>Portal de Produtos
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <main>
 
@@ -220,6 +218,8 @@
 
 </main>
 
-<footer>© 2025 Pegasus</footer>
+<!--<div th:replace="fragments/footer :: footer"></div>-->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

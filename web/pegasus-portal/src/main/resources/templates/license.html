@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Licença</title>
 </head>
 <body>
 
-<header>
-    <h1>Pegasus soluções e serviços SA</h1>
-    <p>Inovação e soluções inteligentes para um futuro melhor</p>
-    <hr>
-</header>
+<!--<div th:replace="fragments/header :: header"></div>-->
+<div th:replace="~{fragments/header :: header}"></div>
 
 <h1>Licença MIT</h1>
 <pre>
@@ -36,11 +33,9 @@ SOFTWARE.
 </pre>
 
 <hr>
-<footer>
-    <p>© 2025 Pegasus - Todos os direitos reservados.</p>
-    <p>✉ contato@pegasus.com.br</p>
-    <p>☎ (11) 1234-5678</p>
-</footer>
+
+<!--<div th:replace="fragments/footer :: footer"></div>-->
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

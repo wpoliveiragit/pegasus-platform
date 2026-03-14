@@ -1,47 +1,405 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>Pegasus Portal</title>
+
+    <style>
+        header{
+            background:#1e293b;
+            color:white;
+            padding:20px;
+            text-align:center;
+        }
+        body{
+            margin:0;
+            font-family:Arial, Helvetica, sans-serif;
+            background:#f4f6f9;
+        }
+        pre{
+            white-space:pre-wrap;
+            word-break:break-word;
+            overflow-x:auto;
+            max-width:100%;
+        }
+
+        /* LAYOUT FLEX */
+
+        .layout{
+            display:flex;
+            min-height:100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar{
+            width:220px;
+            background:#2c3e50;
+            color:white;
+            padding:20px;
+        }
+
+        .sidebar ul{
+            list-style:none;
+            padding:0;
+            margin:0;
+        }
+
+        .sidebar li{
+            margin-bottom:10px;
+        }
+
+        .sidebar a{
+            display:block;
+            padding:8px 10px;
+            text-decoration:none;
+            color:white;
+            border-radius:4px;
+        }
+
+        .sidebar a:hover{
+            background:#34495e;
+        }
+
+        /* CONTENT */
+
+        .content{
+            flex:1;
+            padding:25px;
+            background:white;
+        }
+
+        /* GRID */
+
+        .content-grid{
+            display:grid;
+            grid-template-columns:repeat(1,1fr);
+            gap:20px;
+        }
+
+        .content-box{
+            background:#f5f5f5;
+            border:3px solid #d1d5db;
+            padding:10px;
+            border-radius:6px;
+            overflow-x:auto;
+        }
+
+        /* CODE */
+
+        .code-block{
+            background:#0f172a;
+            color:#e2e8f0;
+            padding:15px;
+            border-radius:6px;
+            font-family:Consolas, monospace;
+            font-size:13px;
+            white-space:pre-wrap;
+            word-break:break-word;
+            overflow-x:auto;
+        }
+
+        /* BUTTON */
+
+        .api-button{
+            padding:8px 18px;
+            border:none;
+            border-radius:4px;
+            background:#2563eb;
+            color:white;
+            cursor:pointer;
+        }
+
+        .api-button:hover{
+            background:#1d4ed8;
+        }
+
+    </style>
+
+    <script>
+
+        function sanitizeInput(input){
+
+            const field = input.name;
+            let v = input.value;
+
+            switch(field){
+
+                case "id":
+                case "quantity":
+                case "page":
+                case "size":
+                    v = v.replace(/[^0-9]/g,'');
+                    if(v === "0") v = "";
+                    break;
+
+                case "price":
+                    v = v.replace(/[^0-9.]/g,'')
+                         .replace(/(\..*)\./g,'$1');
+
+                    if(v.includes(".")){
+                        let p = v.split(".");
+                        p[1] = p[1].slice(0,2);
+                        v = p.join(".");
+                    }
+                    break;
+
+                case "name":
+                    v = v.trimStart();
+                    break;
+            }
+
+            input.value = v;
+        }
+
+    </script>
+
 </head>
+
 <body>
 
-<header>
-    <h1>Pegasus soluções e serviços SA</h1>
-    <p>Inovação e soluções inteligentes para um futuro melhor</p>
-    <hr>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 
-<h1>pegasus-portal</h1>
-<a href="/pegasus-portal/call-service">Chamar Service A</a>
-<br/><br/>
-<p th:if="${response}">Resposta do Service A:<span th:text="${response}"></span></p>
+<div class="layout">
 
-<table width="100%">
-    <tr>
-        <!-- MENU -->
-        <td width="20%" valign="top">
-            <ul>
-                <li><a href="/pegasus-portal/license">Licença</a></li>
-                <li><a href="/pegasus-portal/terms">Termos de Uso</a></li>
-                <li><a href="/pegasus-portal/products">Gerenciamento de Produtos</a></li>
-            </ul>
-        </td>
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+        <ul>
+            <li><a href="/pegasus-portal/license">Licença</a></li>
+            <li><a href="/pegasus-portal/terms">Termos de Uso</a></li>
+            <li><a href="/pegasus-portal/products">Gerenciamento de Produtos</a></li>
+        </ul>
+    </aside>
 
-        <!-- CONTEÚDO -->
-        <td valign="top">
-            <h2>Bem-vindo ao Pegasus Portal 1</h2>
-            <p>Portal central para gestão e visualização de produtos.</p>
-        </td>
-    </tr>
-</table>
+    <!-- CONTENT -->
+    <main class="content">
+        <div class="content-grid">
+
+            <h1 style="text-align:center;">PEGASUS-API-PRODUCTS</h1>
+            <p style="text-align:center;">end-points</p>
+
+            <!-- CALL SERVICE -->
+            <div class="content-box">
+                <h2 style="text-align:center;">CALL SERVICE</h2>
+                <p><b>GET:</b> /pegasus-portal/prod/call-service</p>
+                <p><b>Description:</b> verifica se o projeto <b><i>Produtos</i></b> está online</p>
+                <form method="get"
+                      action="/pegasus-portal/prod/call-service"
+                      style="display:flex;justify-content:center;margin-top:15px;">
+                    <button type="submit" class="api-button">Verificar Serviço</button>
+                </form>
+                <pre class="code-block"><code
+                        th:text="${response != null} ? ${response} : 'sem retorno do endpoint'"></code></pre>
+            </div>
+
+            <!-- FIND BY ID -->
+            <div class="content-box">
+                <h2 style="text-align:center;">FIND-BY-ID</h2>
+                <p><b>GET:</b> /pegasus-portal/prod/find-by-id</p>
+                <p><b>Description:</b> busca um produto</p>
+                <form method="get"
+                      action="/pegasus-portal/prod/find-by-id"
+                      style="max-width:500px;margin:auto;">
+                    <div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;">
+                        <div style="display:flex;flex-direction:column;">
+                            <label>ID</label>
+                            <input type="text"
+                                   name="id"
+                                   pattern="[1-9][0-9]*"
+                                   inputmode="numeric"
+                                   placeholder="ex: 1"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:20px;">
+                        <button type="submit" class="api-button">Buscar</button>
+                    </div>
+                </form>
+                <pre class="code-block"><code
+                        th:text="${selectedProduct != null} ? ${selectedProduct} : 'dado não encontrado'"></code></pre>
+            </div>
+
+            <!-- FIND ALL -->
+            <div class="content-box">
+                <h2 style="text-align:center;">FIND ALL</h2>
+                <p><b>GET:</b> /pegasus-portal/prod/find-all</p>
+                <p><b>Description:</b> Busca uma paginação de produtos</p>
+                <form method="get"
+                      action="/pegasus-portal/prod/find-all"
+                      style="max-width:700px;margin:auto;">
+                    <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Página</label>
+                            <input type="text"
+                                   name="page"
+                                   value="1"
+                                   inputmode="numeric"
+                                   pattern="[1-9][0-9]*"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Quantidade</label>
+                            <input type="text"
+                                   name="size"
+                                   value="1"
+                                   inputmode="numeric"
+                                   pattern="[1-9][0-9]*"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:20px;">
+                        <button type="submit" class="api-button">Buscar</button>
+                    </div>
+                </form>
+                <pre class="code-block"><code
+                        th:text="${pageResponse != null} ? ${pageResponse} : 'dado não encontrado'"></code></pre>
+            </div>
+
+            <!-- CREATE -->
+            <div class="content-box">
+                <h2 style="text-align:center;">CREATE</h2>
+                <p><b>POST:</b> /pegasus-portal/prod/create</p>
+                <p><b>Description:</b> Cria um novo produto</p>
+                <form method="post"
+                      action="/pegasus-portal/prod/create"
+                      style="max-width:900px;margin:auto;">
+                    <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Name</label>
+                            <input type="text"
+                                   name="name"
+                                   minlength="1"
+                                   maxlength="120"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Price</label>
+                            <input type="text"
+                                   name="price"
+                                   inputmode="decimal"
+                                   pattern="^[0-9]+(\.[0-9]{1,2})?$"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Quantity</label>
+                            <input type="text"
+                                   name="quantity"
+                                   inputmode="numeric"
+                                   pattern="[0-9]+"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:20px;">
+                        <button type="submit" class="api-button">Criar</button>
+                    </div>
+                </form>
+                <pre class="code-block">
+                    <code th:text="${createProduct != null} ? ${createProduct} : 'aguardando execução'"></code>
+                </pre>
+            </div>
+
+            <!-- UPDATE -->
+            <div class="content-box">
+                <h2 style="text-align:center;">UPDATE</h2>
+                <p><b>POST:</b> /pegasus-portal/prod/update</p>
+                <p><b>Description:</b> atualiza um produto por completo</p>
+                <form method="post"
+                      action="/pegasus-portal/prod/update"
+                      style="max-width:900px;margin:auto;">
+                    <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                        <div style="display:flex;flex-direction:column;">
+                            <label>ID</label>
+                            <input type="text"
+                                   name="id"
+                                   inputmode="numeric"
+                                   pattern="[1-9][0-9]*"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Name</label>
+                            <input type="text"
+                                   name="name"
+                                   minlength="1"
+                                   maxlength="120"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Price</label>
+                            <input type="text"
+                                   name="price"
+                                   inputmode="decimal"
+                                   pattern="^[0-9]+(\.[0-9]{1,2})?$"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                        <div style="display:flex;flex-direction:column;">
+                            <label>Quantity</label>
+                            <input type="text"
+                                   name="quantity"
+                                   inputmode="numeric"
+                                   pattern="[0-9]+"
+                                   oninput="sanitizeInput(this)"
+                                   required>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:20px;">
+                        <button type="submit" class="api-button">Atualizar</button>
+                    </div>
+                </form>
+                <pre class="code-block">
+                    <code th:text="${updateProduct != null} ? ${updateProduct} : 'aguardando execução'"></code>
+                </pre>
+            </div>
+
+            <!-- DELETE -->
+            <div class="content-box">
+                <h2 style="text-align:center;">DELETE</h2>
+                <p><b>POST:</b> /pegasus-portal/prod/delete</p>
+                <p><b>Description:</b> remove um produto pelo ID</p>
+                <form method="post"
+                      action="/pegasus-portal/prod/delete"
+                      style="display:flex;flex-direction:column;align-items:center;gap:15px;">
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                        <label>ID</label>
+                        <input type="text"
+                               name="id"
+                               pattern="[1-9][0-9]*"
+                               inputmode="numeric"
+                               placeholder="ex: 1"
+                               oninput="sanitizeInput(this)"
+                               required>
+                    </div>
+                        <button type="submit" class="api-button">Deletar</button>
+                </form>
+                <pre class="code-block">
+                    <code th:text="${deleteProduct != null} ? ${deleteProduct} : 'sem retorno'"></code>
+                </pre>
+            </div>
+
+
+            <h3>Bloco 3</h3>
+            <div class="content-box">
+                <p>Conteúdo futuro</p>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
 
 <hr>
-<footer>
-    <p>© 2025 Pegasus - Todos os direitos reservados.</p>
-    <p>✉ contato@pegasus.com.br</p>
-    <p>☎ (11) 1234-5678</p>
-</footer>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
