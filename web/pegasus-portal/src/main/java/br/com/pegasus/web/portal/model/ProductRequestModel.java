@@ -1,6 +1,6 @@
-package br.com.pegasus.web.portal.domain.model;
+package br.com.pegasus.web.portal.model;
 
-import br.com.pegasus.web.portal.infra.util.MethodUtil;
+import br.com.pegasus.web.portal.util.MethodUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +10,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductModel {
+public class ProductRequestModel {
+
+//  private int code; // http-status::value
+//  private String message; // http-status::reason-phrase
+//  private String detail; // Detalhes do problema
 
   private Long id;
   private String name;
   private Float price;
   private Integer quantity;
 
-  public ProductModel(long id){
+  public ProductRequestModel(long id){
     this.id = id;
   }
 

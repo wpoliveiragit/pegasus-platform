@@ -25,31 +25,26 @@
         }
 
         /* LAYOUT FLEX */
-
         .layout{
             display:flex;
             min-height:100vh;
         }
 
         /* SIDEBAR */
-
         .sidebar{
             width:220px;
             background:#2c3e50;
             color:white;
             padding:20px;
         }
-
         .sidebar ul{
             list-style:none;
             padding:0;
             margin:0;
         }
-
         .sidebar li{
             margin-bottom:10px;
         }
-
         .sidebar a{
             display:block;
             padding:8px 10px;
@@ -57,13 +52,11 @@
             color:white;
             border-radius:4px;
         }
-
         .sidebar a:hover{
             background:#34495e;
         }
 
         /* CONTENT */
-
         .content{
             flex:1;
             padding:25px;
@@ -71,13 +64,11 @@
         }
 
         /* GRID */
-
         .content-grid{
             display:grid;
             grid-template-columns:repeat(1,1fr);
             gap:20px;
         }
-
         .content-box{
             background:#f5f5f5;
             border:3px solid #d1d5db;
@@ -87,7 +78,6 @@
         }
 
         /* CODE */
-
         .code-block{
             background:#0f172a;
             color:#e2e8f0;
@@ -101,7 +91,6 @@
         }
 
         /* BUTTON */
-
         .api-button{
             padding:8px 18px;
             border:none;
@@ -110,7 +99,6 @@
             color:white;
             cursor:pointer;
         }
-
         .api-button:hover{
             background:#1d4ed8;
         }
@@ -118,14 +106,10 @@
     </style>
 
     <script>
-
         function sanitizeInput(input){
-
             const field = input.name;
             let v = input.value;
-
             switch(field){
-
                 case "id":
                 case "quantity":
                 case "page":
@@ -133,32 +117,26 @@
                     v = v.replace(/[^0-9]/g,'');
                     if(v === "0") v = "";
                     break;
-
                 case "price":
                     v = v.replace(/[^0-9.]/g,'')
                          .replace(/(\..*)\./g,'$1');
-
                     if(v.includes(".")){
                         let p = v.split(".");
                         p[1] = p[1].slice(0,2);
                         v = p.join(".");
                     }
                     break;
-
                 case "name":
                     v = v.trimStart();
                     break;
             }
-
             input.value = v;
         }
 
     </script>
-
 </head>
 
 <body>
-
 <div th:replace="~{fragments/header :: header}"></div>
 
 <div class="layout">
@@ -168,7 +146,6 @@
         <ul>
             <li><a href="/pegasus-portal/license">Licença</a></li>
             <li><a href="/pegasus-portal/terms">Termos de Uso</a></li>
-            <li><a href="/pegasus-portal/products">Gerenciamento de Produtos</a></li>
         </ul>
     </aside>
 
@@ -218,7 +195,7 @@
                     </div>
                 </form>
                 <pre class="code-block"><code
-                        th:text="${selectedProduct != null} ? ${selectedProduct} : 'dado não encontrado'"></code></pre>
+                        th:text="${selectedProduct == null} ? 'dado não encontrado' : ${selectedProduct}"></code></pre>
             </div>
 
             <!-- FIND ALL -->
@@ -378,13 +355,12 @@
                                oninput="sanitizeInput(this)"
                                required>
                     </div>
-                        <button type="submit" class="api-button">Deletar</button>
+                    <button type="submit" class="api-button">Deletar</button>
                 </form>
                 <pre class="code-block">
                     <code th:text="${deleteProduct != null} ? ${deleteProduct} : 'sem retorno'"></code>
                 </pre>
             </div>
-
 
             <h3>Bloco 3</h3>
             <div class="content-box">
@@ -392,14 +368,8 @@
             </div>
 
         </div>
-
     </main>
-
 </div>
-
-<hr>
-
 <div th:replace="~{fragments/footer :: footer}"></div>
-
 </body>
 </html>

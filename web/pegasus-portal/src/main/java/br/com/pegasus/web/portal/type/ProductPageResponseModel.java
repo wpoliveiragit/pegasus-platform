@@ -1,7 +1,7 @@
-package br.com.pegasus.web.portal.domain.type;
+package br.com.pegasus.web.portal.type;
 
-import br.com.pegasus.web.portal.domain.model.ProductModel;
-import br.com.pegasus.web.portal.infra.util.MethodUtil;
+import br.com.pegasus.web.portal.model.ProductRequestModel;
+import br.com.pegasus.web.portal.util.MethodUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ProductPageResponseModel {
 
   private PaginationType pagination;
-  private List<ProductModel> products;
+  private List<ProductRequestModel> products;
 
   @Override
   public String toString() {

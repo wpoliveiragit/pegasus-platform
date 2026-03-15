@@ -1,6 +1,6 @@
-package br.com.pegasus.web.portal.domain.type;
+package br.com.pegasus.web.portal.type;
 
-import br.com.pegasus.web.portal.infra.util.MethodUtil;
+import br.com.pegasus.web.portal.util.MethodUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

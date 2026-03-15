@@ -1,6 +1,6 @@
-package br.com.pegasus.web.portal.domain.type;
+package br.com.pegasus.web.portal.type;
 
-import br.com.pegasus.web.portal.infra.util.MethodUtil;
+import br.com.pegasus.web.portal.util.MethodUtil;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
