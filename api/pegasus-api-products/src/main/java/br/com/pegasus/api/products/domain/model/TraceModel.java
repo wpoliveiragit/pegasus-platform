@@ -9,20 +9,27 @@ import java.time.Instant;
 @Getter
 @AllArgsConstructor
 public final class TraceModel {
+  /**Uso futuro, com kafka - não deletar*/
 
   private final int index;
-  private final Instant timestamp;
   private final String message;
-
-  public TraceModel(int index, String message) {
-    this.index = index;
-    this.message = message;
-    this.timestamp = Instant.now();
-  }
+  private final Instant timestamp = Instant.now();
 
   @Override
   public String toString() {
     return MethodUtil.toJson(this);
   }
+
+
+  /**
+   * Exemplo de uso
+   *
+   * private int totalTracking = 0;
+   * private final List<TraceModel> traces = new ArrayList<>();
+   *
+   * public void addTrace(String message, Object... args) {
+   *   traces.add(new TraceModel(++totalTracking, MessageFormatter.arrayFormat(message, args).getMessage()));
+   * }
+   */
 
 }

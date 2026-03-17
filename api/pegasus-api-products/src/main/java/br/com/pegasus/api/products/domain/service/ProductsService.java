@@ -1,62 +1,67 @@
 package br.com.pegasus.api.products.domain.service;
 
 import br.com.pegasus.api.products.api.controller.ProductsController;
-import br.com.pegasus.api.products.domain.adapter.TraceLoggerAdapter;
+import br.com.pegasus.api.products.domain.adapter.ProductsRepositoryAdapter;
+import br.com.pegasus.api.products.domain.adapter.ToolBoxAdapter;
 import br.com.pegasus.api.products.domain.core.ProductsServiceCore;
 import br.com.pegasus.api.products.domain.model.PaginationModel;
 import br.com.pegasus.api.products.domain.model.ProductModel;
 import br.com.pegasus.api.products.domain.model.ProductPageModel;
 import br.com.pegasus.api.products.domain.port.ProductsServicePort;
-import br.com.pegasus.api.products.domain.service.adapter.ToolBoxImplAdapter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Log4j2
 @Service
 public class ProductsService implements ProductsServicePort {
 
-  private static final String NAME_CLASS = ProductsController.class.getSimpleName();
-  private final ProductsServicePort productsCore;
+  private static final String CLASS_NAME = ProductsController.class.getSimpleName();
+  private final ProductsServicePort core;
 
-  public ProductsService(ToolBoxImplAdapter toolBox) {
-    productsCore = new ProductsServiceCore(toolBox);
+  public ProductsService(ToolBoxAdapter toolBox) {
+    core = new ProductsServiceCore(toolBox);
   }
 
   @Override
-  public ProductModel getOne(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::get-one::in: {}", NAME_CLASS, model);
-    ProductModel resp = productsCore.getOne(traceLog, model);
-    traceLog.addTrace("{}::get-one::out: {}", NAME_CLASS, resp);
+  @Transactional(readOnly = true) //dependencia, spring data (não permite nenhum tipo de update no banco)
+  public ProductModel getOne(ProductModel inModel) {
+    log.info("{}::getOne::params: {}", CLASS_NAME, inModel);
+    ProductModel resp = core.getOne(inModel);
+    log.info("{}::getOne::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
   @Override
-  public ProductPageModel getAll(TraceLoggerAdapter traceLog, PaginationModel model) {
-    traceLog.addTrace("{}::get-all::in: {}", NAME_CLASS, model);
-    ProductPageModel resp = productsCore.getAll(traceLog, model);
-    traceLog.addTrace("{}::get-all::out: {}", NAME_CLASS, resp);
+  @Transactional(readOnly = true)
+  public ProductPageModel getAll(PaginationModel inModel) {
+    log.info("{}::getAll::params: {}", CLASS_NAME, inModel);
+    ProductPageModel resp = core.getAll(inModel);
+    log.info("{}::getAll::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
   @Override
-  public ProductModel create(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::create::in: {}", NAME_CLASS, model);
-    ProductModel resp = productsCore.create(traceLog, model);
-    traceLog.addTrace("{}::create::out: {}", NAME_CLASS, resp);
+  public ProductModel create(ProductModel inModel) {
+    log.info("{}::create::params: {}", CLASS_NAME, inModel);
+    ProductModel resp = core.create(inModel);
+    log.info("{}::create::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
   @Override
-  public ProductModel update(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::create::in: {}", NAME_CLASS, model);
-    ProductModel resp = productsCore.update(traceLog, model);
-    traceLog.addTrace("{}::create::out: {}", NAME_CLASS, resp);
+  public ProductModel update(ProductModel inModel) {
+    log.info("{}::update::params: {}", CLASS_NAME, inModel);
+    ProductModel resp = core.update(inModel);
+    log.info("{}::update::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
   @Override
-  public void delete(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::create::in: {}", NAME_CLASS, model);
-    productsCore.delete(traceLog, model);
-    traceLog.addTrace("{}::create::out: void", NAME_CLASS);
+  public void delete(ProductModel inModel) {
+    log.info("{}::delete::params: {}", CLASS_NAME, inModel);
+    core.delete(inModel);
+    log.info("{}::delete::response: void", CLASS_NAME);
   }
 
 }

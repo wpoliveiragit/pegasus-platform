@@ -1,12 +1,12 @@
 package br.com.pegasus.api.products.infra.mapper;
 
-import br.com.pegasus.api.products.domain.model.ProductModel;
-import br.com.pegasus.api.products.domain.model.ProductPageModel;
-import br.com.pegasus.api.products.infra.repository.entity.ProductEntity;
 import br.com.pegasus.api.products.api.type.ProductCreateRequestType;
 import br.com.pegasus.api.products.api.type.ProductPageResponseType;
 import br.com.pegasus.api.products.api.type.ProductResponseType;
 import br.com.pegasus.api.products.api.type.ProductUpdateRequestType;
+import br.com.pegasus.api.products.domain.model.ProductModel;
+import br.com.pegasus.api.products.domain.model.ProductPageModel;
+import br.com.pegasus.api.products.infra.repository.entity.ProductEntity;
 
 public final class ProductMapper {
 
@@ -16,6 +16,16 @@ public final class ProductMapper {
     type.setPagination(PageMapper.toType(model.getPagination()));
     type.setProducts(model.getProducts().stream().map(ProductMapper::toType).toList());
     return type;
+  }
+
+  // ENTITY
+  public static ProductEntity toEntity(ProductModel model) {
+    var entity = new ProductEntity();
+    entity.setId(model.getId());
+    entity.setName(model.getName());
+    entity.setPrice(model.getPrice());
+    entity.setQuantity(model.getQuantity());
+    return entity;
   }
 
   public static ProductResponseType toType(ProductModel model) {
@@ -52,16 +62,6 @@ public final class ProductMapper {
     model.setPrice(entity.getPrice());
     model.setQuantity(entity.getQuantity());
     return model;
-  }
-
-  // ENTITY
-  public static ProductEntity toEntity(ProductModel model) {
-    var entity = new ProductEntity();
-    entity.setId(model.getId());
-    entity.setName(model.getName());
-    entity.setPrice(model.getPrice());
-    entity.setQuantity(model.getQuantity());
-    return entity;
   }
 
 }

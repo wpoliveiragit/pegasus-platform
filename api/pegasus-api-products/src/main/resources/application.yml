@@ -18,3 +18,5 @@ spring.h2.console.path: /h2-console  # Define o caminho para acessar o console n
 spring.jpa.show-sql: false  # Exibe as consultas SQL geradas pelo JPA no console
 spring.jpa.hibernate.ddl-auto: create  # Define o comportamento do Hibernate em relação ao esquema do banco (no caso, cria o esquema e apaga os dados existentes)
 hibernate.dialect: org.hibernate.dialect.H2Dialect  # Dialeto específico do H2 para o Hibernate (H2 não precisa)
+
+app.test: ${APP_TEST}

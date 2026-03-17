@@ -4,15 +4,12 @@ import br.com.pegasus.api.products.api.type.ProductCreateRequestType;
 import br.com.pegasus.api.products.api.type.ProductPageResponseType;
 import br.com.pegasus.api.products.api.type.ProductResponseType;
 import br.com.pegasus.api.products.api.type.ProductUpdateRequestType;
-import br.com.pegasus.api.products.domain.adapter.TraceLoggerAdapter;
 import br.com.pegasus.api.products.domain.model.PaginationModel;
 import br.com.pegasus.api.products.domain.model.ProductModel;
 import br.com.pegasus.api.products.domain.model.ProductPageModel;
 import br.com.pegasus.api.products.domain.port.ProductsServicePort;
-import br.com.pegasus.api.products.infra.logger.FactoryLogger;
 import br.com.pegasus.api.products.infra.mapper.ProductMapper;
 import br.com.pegasus.api.products.infra.util.HttpUtil;
-import br.com.pegasus.api.products.infra.util.MethodUtil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
@@ -30,40 +27,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @Log4j2
 @Validated
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductsController {
-
-  private static final String NAME_CLASS = ProductsController.class.getSimpleName();
+  private static final String CLASS_NAME = ProductsController.class.getSimpleName();
 
   private final ProductsServicePort productsService;
-  private final FactoryLogger factoryLogger;
 
   @GetMapping({"/up", "/up/"})
-  public String up() {
-    log.info("up");
-    return "{ \"up\" : \"OK\" }";
+  public ResponseEntity<Map<String, String>> up() {
+
+    log.info("{}::up::params: void", CLASS_NAME);
+    Map<String, String> reponse = Map.of("up", "OK");
+    ResponseEntity<Map<String, String>> resp = HttpUtil.responseOK(reponse);
+    log.info("{}::up::response: {}", CLASS_NAME, resp);
+    return resp;
   }
 
   @GetMapping({"/{id}", "/{id}/"})
   public ResponseEntity<ProductResponseType> getOne(
       @PathVariable(value = "id") @Positive Long id) {
 
-    ProductModel inModel = new ProductModel(id);
-    TraceLoggerAdapter traceLog = factoryLogger.create();
-    traceLog.addTrace("{}::get-one::in: {}", NAME_CLASS, inModel);
-
-    ResponseEntity<ProductResponseType> resp = MethodUtil.callWithTrace(traceLog, () -> {
-      ProductModel outModel = productsService.getOne(traceLog, inModel);
-      ProductResponseType response = ProductMapper.toType(outModel);
-      return HttpUtil.responseOK(response);
-    });
-
-    traceLog.addTrace("{}::create::out: {}", NAME_CLASS, resp.getBody());
-    traceLog.logInfo(traceLog);
+    log.info("{}::getOne::params: id:{}", CLASS_NAME, id);
+    ProductModel outModel = productsService.getOne(new ProductModel(id));
+    ProductResponseType response = ProductMapper.toType(outModel);
+    ResponseEntity<ProductResponseType> resp = HttpUtil.responseOK(response);
+    log.info("{}::getOne::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
@@ -72,18 +66,11 @@ public class ProductsController {
       @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
       @RequestParam(value = "size", defaultValue = "0") @Min(1) Integer size) {
 
-    PaginationModel inModel = new PaginationModel(page, size);
-    TraceLoggerAdapter traceLog = factoryLogger.create();
-    traceLog.addTrace("{}::get-all::in: {}", NAME_CLASS, inModel);
-
-    ResponseEntity<ProductPageResponseType> resp = MethodUtil.callWithTrace(traceLog, () -> {
-      ProductPageModel outModel = productsService.getAll(traceLog, inModel);
-      ProductPageResponseType response = ProductMapper.toType(outModel);
-      return HttpUtil.responseOK(response);
-    });
-
-    traceLog.addTrace("{}::get-all::out: {}", NAME_CLASS, resp.getBody());
-    traceLog.logInfo(traceLog);
+    log.info("{}::getAll::params: page:{} - size:{}", CLASS_NAME, page, size);
+    ProductPageModel outModel = productsService.getAll(new PaginationModel(page, size));
+    ProductPageResponseType response = ProductMapper.toType(outModel);
+    ResponseEntity<ProductPageResponseType> resp = HttpUtil.responseOK(response);
+    log.info("{}::getAll::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
@@ -91,17 +78,11 @@ public class ProductsController {
   public ResponseEntity<ProductResponseType> create(
       @Valid @RequestBody ProductCreateRequestType body) {
 
-    TraceLoggerAdapter traceLog = factoryLogger.create();
-    traceLog.addTrace("{}::create::in: {}", NAME_CLASS, body);
-
-    ResponseEntity<ProductResponseType> resp = MethodUtil.callWithTrace(traceLog, () -> {
-      ProductModel outModel = productsService.create(traceLog, ProductMapper.toModel(body));
-      ProductResponseType response = ProductMapper.toType(outModel);
-      return HttpUtil.responseCreate(response);
-    });
-
-    traceLog.addTrace("{}::create::out: {}", NAME_CLASS, resp.getBody());
-    traceLog.logInfo(traceLog);
+    log.info("{}::create::params: body:{}", CLASS_NAME, body);
+    ProductModel outModel = productsService.create(ProductMapper.toModel(body));
+    ProductResponseType response = ProductMapper.toType(outModel);
+    ResponseEntity<ProductResponseType> resp = HttpUtil.responseCreate(response);
+    log.info("{}::create::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
@@ -110,16 +91,11 @@ public class ProductsController {
       @PathVariable(value = "id") @Positive Long id,
       @Valid @RequestBody ProductUpdateRequestType body) {
 
-    TraceLoggerAdapter traceLog = factoryLogger.create();
-    traceLog.addTrace("{}::create::in: {}", NAME_CLASS, body);
-
-    ResponseEntity<ProductResponseType> resp = MethodUtil.callWithTrace(traceLog, () -> {
-      ProductModel outModel = productsService.update(traceLog, ProductMapper.toModel(id, body));
-      ProductResponseType response = ProductMapper.toType(outModel);
-      return HttpUtil.responseOK(response);
-    });
-    traceLog.addTrace("{}::create::out: {}", NAME_CLASS, resp.getBody());
-    traceLog.logInfo(traceLog);
+    log.info("{}::update::params: id:{} - body:{}", CLASS_NAME, id, body);
+    ProductModel outModel = productsService.update(ProductMapper.toModel(id, body));
+    ProductResponseType response = ProductMapper.toType(outModel);
+    ResponseEntity<ProductResponseType> resp = HttpUtil.responseOK(response);
+    log.info("{}::update::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
@@ -127,12 +103,9 @@ public class ProductsController {
   public void delete(
       @PathVariable(value = "id") Long id) {
 
-    ProductModel inModel = new ProductModel(id);
-    TraceLoggerAdapter traceLog = factoryLogger.create();
-    traceLog.addTrace("{}::delete::in: {}", NAME_CLASS, inModel);
-    MethodUtil.runWithTrace(traceLog, () -> productsService.delete(traceLog, new ProductModel(id)));
-    traceLog.addTrace("{}::delete::out: void", NAME_CLASS);
-    traceLog.logInfo(traceLog);
+    log.info("{}::delete::params: id:{}", CLASS_NAME, id);
+    productsService.delete(new ProductModel(id));
+    log.info("{}::delete::response: void", CLASS_NAME);
   }
 
 }

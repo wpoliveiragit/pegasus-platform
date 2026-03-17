@@ -1,83 +1,86 @@
 package br.com.pegasus.api.products.domain.core;
 
-import br.com.pegasus.api.products.domain.adapter.GlobalExceptionAdapter;
+import br.com.pegasus.api.products.domain.adapter.ProductsRepositoryAdapter;
 import br.com.pegasus.api.products.domain.adapter.ToolBoxAdapter;
-import br.com.pegasus.api.products.domain.adapter.TraceLoggerAdapter;
+import br.com.pegasus.api.products.domain.exception.BusinessException;
 import br.com.pegasus.api.products.domain.model.PaginationModel;
 import br.com.pegasus.api.products.domain.model.ProductModel;
 import br.com.pegasus.api.products.domain.model.ProductPageModel;
 import br.com.pegasus.api.products.domain.port.ProductsServicePort;
-import br.com.pegasus.api.products.domain.adapter.ProductsRepositoryAdapter;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 
+@Log4j2
 public class ProductsServiceCore implements ProductsServicePort {
 
-  private static final String NAME_CLASS = ProductsServiceCore.class.getSimpleName();
+  private static final String CLASS_NAME = ProductsServiceCore.class.getSimpleName();
   private final ProductsRepositoryAdapter repo;
-  private final GlobalExceptionAdapter exTool;
 
   public ProductsServiceCore(ToolBoxAdapter toolBox) {
     this.repo = toolBox.getProductsRepository();
-    this.exTool = toolBox.getGlobalException();
   }
 
-  @Transactional(readOnly = true) //dependencia, spring data (não permite nenhum tipo de update no banco)
   @Override
-  public ProductModel getOne(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::getOne::in: {}", NAME_CLASS, model);
-    ProductModel resp = repo.findById(traceLog, model).orElseThrow(() -> exTool.notFoundId(traceLog, model.getId()));
-    traceLog.addTrace("{}::getOne::out: {}", NAME_CLASS, resp);
-    return resp;
-  }
-
-  @Transactional(readOnly = true)
-  @Override
-  public ProductPageModel getAll(TraceLoggerAdapter traceLog, PaginationModel model) {
-    traceLog.addTrace("{}::getAll::in: {}", NAME_CLASS, model);
-    ProductPageModel resp = repo.findAll(traceLog, model);
-    traceLog.addTrace("{}::getAll::out: {}", NAME_CLASS, resp);
+  public ProductModel getOne(ProductModel inModel) {
+    log.info("{}::getOne::params: {}", CLASS_NAME, inModel);
+    ProductModel resp = repo.findById(inModel).orElseThrow(() -> notFoundId(inModel.getId()));
+    log.info("{}::getOne::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
   @Override
-  public ProductModel create(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::create::in: {}", NAME_CLASS, model);
-    checkName(traceLog, model);
-    ProductModel resp = repo.save(traceLog, model);
-    traceLog.addTrace("{}::create::out: {}", NAME_CLASS, resp);
+  public ProductPageModel getAll(PaginationModel inModel) {
+    log.info("{}::getAll::params: {}", CLASS_NAME, inModel);
+    ProductPageModel resp = repo.findAll(inModel);
+    log.info("{}::getAll::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
   @Override
-  public ProductModel update(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::update::in: {}", NAME_CLASS, model);
-    ProductModel upModel = getOne(traceLog, model);
-    if (!upModel.getName().equals(model.getName())) {
-      checkName(traceLog, model);
+  public ProductModel create(ProductModel inModel) {
+    log.info("{}::create::params: {}", CLASS_NAME, inModel);
+    checkName(inModel);
+    ProductModel resp = repo.save(inModel);
+    log.info("{}::create::response: {}", CLASS_NAME, resp);
+    return resp;
+  }
+
+  @Override
+  public ProductModel update(ProductModel inModel) {
+    log.info("{}::update::params: {}", CLASS_NAME, inModel);
+    ProductModel upModel = getOne(inModel);
+    if (!upModel.getName().equals(inModel.getName())) {
+      checkName(inModel);
     }
-    ProductModel resp = repo.save(traceLog, model);
-    traceLog.addTrace("{}::update::out: {}", NAME_CLASS, resp);
+    ProductModel resp = repo.save(inModel);
+    log.info("{}::update::response: {}", CLASS_NAME, resp);
     return resp;
   }
 
   @Override
-  public void delete(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::delete::in: {}", NAME_CLASS, model);
-    repo.deleteById(traceLog, model);
-    traceLog.addTrace("{}::delete::out: void", NAME_CLASS);
+  public void delete(ProductModel inModel) {
+    log.info("{}::delete::params: {}", CLASS_NAME, inModel);
+    repo.deleteById(inModel);
+    log.info("{}::delete::response: void", CLASS_NAME);
   }
 
   /**
    * Verifica se o nome existe no banco de dados, caso propsitivo uma exception de conflito será disparada.
    *
-   * @param model o modelo com o nome a ser verificado
+   * @param inModel o modelo com o nome a ser verificado
    */
-  private void checkName(TraceLoggerAdapter traceLog, ProductModel model) {
-    traceLog.addTrace("{}::checkName::in: {}", NAME_CLASS, model);
-    repo.findByName(traceLog, model).ifPresent(e -> {
-      throw exTool.conflictName(traceLog, model.getName());
-    });
-    traceLog.addTrace("{}::checkName::out: void", NAME_CLASS);
+  private void checkName(ProductModel inModel) {
+    log.info("{}::checkName::params: {}", CLASS_NAME, inModel);
+    repo.findByName(inModel).ifPresent(e -> conflictName(inModel.getName()));
+    log.info("{}::checkName::response: void", CLASS_NAME);
+  }
+
+  private void conflictName(String name) {
+    throw new BusinessException("Existing name '" + name + "'", HttpStatus.CONFLICT);
+  }
+
+  private BusinessException notFoundId(Long id) {
+    return new BusinessException("Product Not Found by id=" + id, HttpStatus.NOT_FOUND);
   }
 
 }
