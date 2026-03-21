@@ -1,3 +1,6 @@
 server:
   servlet:
     context-path: /pegasus-portal
+
+#api.products.url.products: "http://gateway:8080/pegasus-api-products/products"
+api.products.url.products: ${API_PRODUCTS_URL}

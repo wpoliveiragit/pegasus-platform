@@ -1,7 +1,6 @@
 package br.com.pegasus.web.portal.controller;
 
 import br.com.pegasus.web.portal.logger.AppLogger;
-import br.com.pegasus.web.portal.logger.port.AppLoggerPort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,27 +8,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping
 public class WebController {
-  private static final AppLoggerPort log = new AppLogger();
-  private static final String WEB_HOME =  "index";
-  private static final String WEB_TERMS =  "terms";
-  private static final String WEB_LICENSE =  "license";
+
+  private final static AppLogger log = new AppLogger(WebController.class);
 
   @GetMapping
   public String home() {
-    log.info("AppLoggerPort::home::execute");
-    return WEB_HOME;
+    log.infoPattern("home", "execute: VOID");
+    return "index";
   }
 
   @GetMapping("/terms")
   public String terms() {
-    log.info("AppLoggerPort::terms::execute");
-    return WEB_TERMS;
+    log.infoPattern("terms", "execute: VOID");
+    return "terms";
   }
 
   @GetMapping("/license")
   public String license() {
-    log.info("AppLoggerPort::license::execute");
-    return WEB_LICENSE;
+    log.infoPattern("license", "execute: VOID");
+    return "license";
   }
 
 }

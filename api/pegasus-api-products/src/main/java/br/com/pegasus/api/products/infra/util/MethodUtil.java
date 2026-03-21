@@ -12,28 +12,8 @@ public final class MethodUtil {
     try {
       return mapper.writeValueAsString(obj);
     } catch (Exception ex) {
-      return "{Err: }" + ex.getMessage();
+      return "{Err: " + ex.getMessage()+ "}";
     }
   }
-
-//  public static <R> R callWithTrace(TraceLoggerAdapter traceLog, Supplier<R> action) {
-//    try {
-//      return action.get();
-//    } catch (Exception ex) {
-//      throw ensureGlobalException(ex, traceLog);
-//    }
-//  }
-
-//  public static void runWithTrace(TraceLoggerAdapter traceLog, Runnable action) {
-//    try {
-//      action.run();
-//    } catch (Exception ex) {
-//      throw ensureGlobalException(ex, traceLog);
-//    }
-//  }
-
-//  private static BusinessException ensureGlobalException(Exception ex, TraceLoggerAdapter traceLog) {
-//    return (ex instanceof BusinessException ge) ? ge : BusinessException.internalServerError(ex);
-//  }
 
 }

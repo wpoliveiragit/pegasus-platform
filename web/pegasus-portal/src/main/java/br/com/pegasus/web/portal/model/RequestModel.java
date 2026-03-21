@@ -1,26 +1,25 @@
-package br.com.pegasus.web.portal.type;
+package br.com.pegasus.web.portal.model;
 
-import br.com.pegasus.web.portal.model.ProductRequestModel;
 import br.com.pegasus.web.portal.util.MethodUtil;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductPageResponseModel {
+public class RequestModel {
 
-  private PaginationType pagination;
-  private List<ProductRequestModel> products;
+  private ProductModel product;
+  private Integer page;
+  private Integer size;
 
   @Override
   public String toString() {
     return MethodUtil.toJson(this);
   }
-
 }

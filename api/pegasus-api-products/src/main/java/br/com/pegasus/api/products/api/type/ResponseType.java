@@ -1,17 +1,21 @@
 package br.com.pegasus.api.products.api.type;
 
 import br.com.pegasus.api.products.infra.util.MethodUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
-public class ProductPageResponseType {
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResponseType {
 
-  private PaginationType pagination;
-  private List<ProductResponseType> products;
+  private int status;
+  private Object response;
 
   @Override
   public String toString() {

@@ -1,24 +1,22 @@
-package br.com.pegasus.web.portal.type;
+package br.com.pegasus.api.products.api.type.product;
 
-import br.com.pegasus.web.portal.util.MethodUtil;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
+import br.com.pegasus.api.products.infra.util.MethodUtil;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder(toBuilder = true)
 @NoArgsConstructor
-public class ProductCreateRequestType {
+@AllArgsConstructor
+public class ProductResponseType {
 
-  @NotBlank
+  private Long id;
   private String name;
-  @PositiveOrZero
   private Float price;
-  @PositiveOrZero
   private Integer quantity;
 
   @Override

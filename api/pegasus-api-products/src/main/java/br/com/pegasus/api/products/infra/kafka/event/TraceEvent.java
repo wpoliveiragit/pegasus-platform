@@ -1,25 +1,30 @@
-package br.com.pegasus.api.products.domain.model;
+package br.com.pegasus.api.products.infra.kafka.event;
 
 import br.com.pegasus.api.products.infra.util.MethodUtil;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 
 @Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
 @AllArgsConstructor
-public final class TraceModel {
-  /**Uso futuro, com kafka - não deletar*/
+public final class TraceEvent {
+  /** Uso futuro, com kafka - não deletar */
 
-  private final int index;
-  private final String message;
-  private final Instant timestamp = Instant.now();
+  private int index;
+  private String message;
+  private Instant timestamp = Instant.now();
 
   @Override
   public String toString() {
     return MethodUtil.toJson(this);
   }
-
 
   /**
    * Exemplo de uso

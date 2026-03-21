@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 @Log4j2
@@ -22,62 +23,79 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class ProductsRepositoryImplAdapter implements ProductsRepositoryAdapter {
 
-  private static final String CLASS_NAME = ProductsRepositoryImplAdapter.class.getSimpleName();
+  private static class Const {
+    private static final String CLASS_NAME = ProductsRepositoryImplAdapter.class.getSimpleName();
+
+    private static final String LOG_FIND_BY_ID_PARAMS = CLASS_NAME + "::findById::params: {}";
+    private static final String LOG_FIND_BY_ID_RESPONSE = CLASS_NAME + "::findById::response: {}";
+
+    private static final String LOG_FIND_BY_NAME_PARAMS = CLASS_NAME + "::findByName::params: {}";
+    private static final String LOG_FIND_BY_NAME_RESPONSE = CLASS_NAME + "::findByName::response: {}";
+
+    private static final String LOG_FIND_ALL_PARAMS = CLASS_NAME + "::findAll::params: {}";
+    private static final String LOG_FIND_ALL_RESPONSE = CLASS_NAME + "::findAll::response: {}";
+
+    private static final String LOG_SAVE_PARAMS = CLASS_NAME + "::save::params: {}";
+    private static final String LOG_SAVE_RESPONSE = CLASS_NAME + "::save::response: {}";
+
+    private static final String LOG_DELETE_PARAMS = CLASS_NAME + "::delete::params: {}";
+    private static final String LOG_DELETE_RESPONSE = CLASS_NAME + "::delete::response: VOID";
+  }
+
   private final ProductsRepository repo;
 
   @PostConstruct
-  public void init() {
-    // add 20 elementos ao banco
-    System.out.println("\n# Adicionando itens ao banco de dados");
-    System.out.println("Database: itens adicionados");
-    IntStream.rangeClosed(1, 20)//
-        .forEach(i -> {
-          ProductEntity entity = new ProductEntity();
-          entity.setName("Prod-" + i);
-          entity.setPrice(33.34F);
-          entity.setQuantity(5);
-          repo.save(entity);
-          System.out.println(i + ") " + entity);
-        });
+  public void init() {// add 20 elementos ao banco
+    System.out.println("\n\n# Adicionando itens ao banco de dados");
+    Random random = new Random();
+    IntStream.rangeClosed(1, 20).forEach(i -> {
+      var entity = ProductEntity.builder()//
+          .name("Prod-" + i)//
+          .price(random.nextInt(100, 10000) / 100f)//
+          .quantity(random.nextInt(30))//
+          .build();
+      entity = repo.save(entity);
+      System.out.println(i + ") " + entity);
+    });
   }
 
   @Override
   public Optional<ProductModel> findById(ProductModel model) {
-    log.info("{}::find-by-id::params: {}", CLASS_NAME, model);
+    log.info(Const.LOG_FIND_BY_ID_PARAMS, model);
     Optional<ProductModel> resp = repo.findById(model.getId()).map(ProductMapper::toModel);
-    log.info("{}::find-by-id::response: {}", CLASS_NAME, resp);
+    log.info(Const.LOG_FIND_BY_ID_RESPONSE, resp);
     return resp;
   }
 
   @Override
   public Optional<ProductModel> findByName(ProductModel model) {
-    log.info("{}::find-by-name::params: {}", CLASS_NAME, model);
+    log.info(Const.LOG_FIND_BY_NAME_PARAMS, model);
     Optional<ProductModel> resp = repo.findByName(model.getName()).map(ProductMapper::toModel);
-    log.info("{}::find-by-name::response: {}", CLASS_NAME, resp);
+    log.info(Const.LOG_FIND_BY_NAME_RESPONSE, resp);
     return resp;
   }
 
   @Override
   public ProductPageModel findAll(PaginationModel model) {
-    log.info("{}::find-all::params: {}", CLASS_NAME, model);
+    log.info(Const.LOG_FIND_ALL_PARAMS, model);
     ProductPageModel resp = PageMapper.toModel(repo.findAll(PageRequest.of(model.getPage(), model.getSize())));
-    log.info("{}::find-all::response: {}", CLASS_NAME, resp);
+    log.info(Const.LOG_FIND_ALL_RESPONSE, resp);
     return resp;
   }
 
   @Override
   public ProductModel save(ProductModel model) {
-    log.info("{}::save::params: {}", CLASS_NAME, model);
+    log.info(Const.LOG_SAVE_PARAMS, model);
     ProductModel resp = ProductMapper.toModel(repo.save(ProductMapper.toEntity(model)));
-    log.info("{}::save::response: {}", CLASS_NAME, resp);
+    log.info(Const.LOG_SAVE_RESPONSE, resp);
     return resp;
   }
 
   @Override
   public void deleteById(ProductModel model) {
-    log.info("{}::delete-by-id::params: {}", CLASS_NAME, model);
+    log.info(Const.LOG_DELETE_PARAMS, model);
     repo.deleteById(model.getId());
-    log.info("{}::delete-by-id::response: void", CLASS_NAME);
+    log.info(Const.LOG_DELETE_RESPONSE);
   }
 
 }

@@ -1,11 +1,17 @@
 package br.com.pegasus.api.products.domain.model;
 
 import br.com.pegasus.api.products.infra.util.MethodUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class PageableModel {
 
   private Integer page;

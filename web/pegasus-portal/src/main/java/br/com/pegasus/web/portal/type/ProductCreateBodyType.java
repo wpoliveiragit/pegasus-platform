@@ -1,6 +1,8 @@
 package br.com.pegasus.web.portal.type;
 
 import br.com.pegasus.web.portal.util.MethodUtil;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +12,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaginationType {
+public class ProductCreateBodyType {
 
-  private Integer page;
-  private Integer size;
-  private Long elements;
-  private Integer pages;
-  private Boolean previous;
-  private Boolean next;
+  private String name;
+  private Float price;
+  private Integer quantity;
 
   @Override
   public String toString() {
