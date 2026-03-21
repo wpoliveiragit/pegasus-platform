@@ -22,4 +22,5 @@ public class UrlProp {
   public String getProductsUp() {
     return products + "/up";
   }
+
 }

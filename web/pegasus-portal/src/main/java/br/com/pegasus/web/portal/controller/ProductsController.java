@@ -4,7 +4,6 @@ import br.com.pegasus.web.portal.logger.AppLogger;
 import br.com.pegasus.web.portal.model.ProductModel;
 import br.com.pegasus.web.portal.model.RequestModel;
 import br.com.pegasus.web.portal.service.port.ProductServicePort;
-import br.com.pegasus.web.portal.util.ConstUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +20,14 @@ public class ProductsController {
   private final static AppLogger log = new AppLogger(ProductsController.class);
   private final ProductServicePort productService;
 
+  public static final String responsePath = "redirect:/";
+
   @GetMapping("/call-service")
   public String callService(RedirectAttributes webModel) {
     log.infoPattern("callService", "params: VOID");
     webModel.addFlashAttribute("response", productService.callService(RequestModel.builder().build()));
     log.infoPattern("callService", "response: {}");
-    return ConstUtil.responsePath;
+    return responsePath;
   }
 
   @GetMapping("/find-by-id")
@@ -37,7 +38,7 @@ public class ProductsController {
     webModel.addFlashAttribute("selectedProduct", productService.findById(//
         RequestModel.builder().product(ProductModel.builder().id(id).build()).build()));
     log.infoPattern("findById", "response: {}", webModel);
-    return ConstUtil.responsePath;
+    return responsePath;
   }
 
   @GetMapping("/find-all")
@@ -49,7 +50,7 @@ public class ProductsController {
     webModel.addFlashAttribute("pageResponse", productService.findAll(//
         RequestModel.builder().page(page).size(size).build()));
     log.infoPattern("findAll", "response: {}", webModel);
-    return ConstUtil.responsePath;
+    return responsePath;
   }
 
   @PostMapping("/create")
@@ -62,7 +63,7 @@ public class ProductsController {
     webModel.addFlashAttribute("createProduct", productService.create(RequestModel.builder()//
         .product(ProductModel.builder().name(name).price(price).quantity(quantity).build()).build()));
     log.infoPattern("create", "response: {}", webModel);
-    return ConstUtil.responsePath;
+    return responsePath;
   }
 
   @PostMapping("/update")
@@ -76,7 +77,7 @@ public class ProductsController {
     webModel.addFlashAttribute("updateProduct", productService.update(RequestModel.builder()//
         .product(ProductModel.builder().id(id).name(name).price(price).quantity(quantity).build()).build()));
     log.infoPattern("update", "response: {}", webModel);
-    return ConstUtil.responsePath;
+    return responsePath;
   }
 
   @PostMapping("/delete")
@@ -87,7 +88,7 @@ public class ProductsController {
     webModel.addFlashAttribute("deleteProduct", productService.delete(//
         RequestModel.builder().product(ProductModel.builder().id(id).build()).build()));
     log.infoPattern("delete", "response: {}", webModel);
-    return ConstUtil.responsePath;
+    return responsePath;
   }
 
 }
