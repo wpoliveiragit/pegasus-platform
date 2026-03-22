@@ -9,13 +9,13 @@ import br.com.pegasus.api.products.domain.model.PaginationModel;
 import br.com.pegasus.api.products.domain.model.ProductModel;
 import br.com.pegasus.api.products.domain.model.ProductPageModel;
 import br.com.pegasus.api.products.domain.port.ProductsServicePort;
+import br.com.pegasus.api.products.infra.logger.AppLogger;
 import br.com.pegasus.api.products.infra.mapper.ProductMapper;
 import br.com.pegasus.api.products.infra.util.HttpUtil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,45 +31,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 import java.util.Map;
 
-@Log4j2
 @Validated
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductsController {
 
-  private static class Const {
-
-    private static final String CLASS_NAME = ProductsController.class.getSimpleName();
-
-    private static final String LOG_UP_PARAMS = CLASS_NAME + "::up::params: VOID";
-    private static final String LOG_UP_RESPONSE = CLASS_NAME + "::up::response: {}";
-
-    private static final String LOG_GET_ONE_PARAMS = CLASS_NAME + "::getOne::params: id:{}";
-    private static final String LOG_GET_ONE_RESPONSE = CLASS_NAME + "::getOne::response: {}";
-
-    private static final String LOG_GET_ALL_PARAMS = CLASS_NAME + "::getAll::params: page:{} - size:{}";
-    private static final String LOG_GET_ALL_RESPONSE = CLASS_NAME + "::getAll::response: {}";
-
-    private static final String LOG_CREATE_PARAMS = CLASS_NAME + "::create::params: body:{}";
-    private static final String LOG_CREATE_RESPONSE = CLASS_NAME + "::create::response: {}";
-
-    private static final String LOG_UPDATE_PARAMS = CLASS_NAME + "::update::params: id:{} - body:{}";
-    private static final String LOG_UPDATE_RESPONSE = CLASS_NAME + "::update::response: {}";
-
-    private static final String LOG_DELETE_PARAMS = CLASS_NAME + "::delete::params: id:{}";
-    private static final String LOG_DELETE_RESPONSE = CLASS_NAME + "::delete::response: VOID";
-  }
-
+  private final AppLogger log = new AppLogger(ProductsController.class);
   private final ProductsServicePort productsService;
 
   @GetMapping({"/up", "/up/"})
   public ResponseEntity<ResponseType> up() {
-
-    log.info(Const.LOG_UP_PARAMS);
+    log.infoPattern("up", "params: VOID");
     Map<String, String> respType = Map.of("up", "OK");
     ResponseEntity<ResponseType> resp = HttpUtil.responseOk(respType);
-    log.info(Const.LOG_UP_RESPONSE, resp.getBody());
+    log.infoPattern("up", "response: {}", resp.getBody());
     return HttpUtil.responseOk(respType);
   }
 
@@ -77,11 +53,11 @@ public class ProductsController {
   public ResponseEntity<ResponseType> getOne(
       @PathVariable(value = "id") @Positive Long id) {
 
-    log.info(Const.LOG_GET_ONE_PARAMS, id);
+    log.infoPattern("getOne", "params: id:{}", id);
     ProductModel respModel = productsService.getOne(ProductModel.builder().id(id).build());
     ProductResponseType respType = ProductMapper.toType(respModel);
     ResponseEntity<ResponseType> resp = HttpUtil.responseOk(respType);
-    log.info(Const.LOG_GET_ONE_RESPONSE, resp.getBody());
+    log.infoPattern("getOne", "response: {}", resp.getBody());
     return resp;
   }
 
@@ -90,12 +66,11 @@ public class ProductsController {
       @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
       @RequestParam(value = "size", defaultValue = "0") @Min(1) Integer size) {
 
-    log.info(Const.LOG_GET_ALL_PARAMS, page, size);
+    log.infoPattern("getAll", "params: page:{}, size:{}", page, size);
     ProductPageModel respModel = productsService.getAll(new PaginationModel(page, size));
     ProductPageResponseType respType = ProductMapper.toType(respModel);
-    log.info(Const.LOG_GET_ALL_RESPONSE, respType);
     ResponseEntity<ResponseType> resp = HttpUtil.responseOk(respType);
-    log.info(Const.LOG_GET_ALL_RESPONSE, resp.getBody());
+    log.infoPattern("getAll", "response: {}", resp.getBody());
     return resp;
   }
 
@@ -103,11 +78,11 @@ public class ProductsController {
   public ResponseEntity<ResponseType> create(
       @Valid @RequestBody ProductCreateRequestType body) {
 
-    log.info(Const.LOG_CREATE_PARAMS, body);
+    log.infoPattern("create", "params: body:{}", body);
     ProductModel respModel = productsService.create(ProductMapper.toModel(body));
     ProductResponseType respType = ProductMapper.toType(respModel);
     ResponseEntity<ResponseType> resp = HttpUtil.responseCreate(respType, URI.create("/product/" + respType.getId()));
-    log.info(Const.LOG_CREATE_RESPONSE, resp.getBody());
+    log.infoPattern("create", "response: {}", resp.getBody());
     return resp;
   }
 
@@ -116,11 +91,11 @@ public class ProductsController {
       @PathVariable(value = "id") @Positive Long id,
       @Valid @RequestBody ProductUpdateRequestType body) {
 
-    log.info(Const.LOG_UPDATE_PARAMS, id, body);
+    log.infoPattern("update", "params: id:{}, body:{}", id, body);
     ProductModel respModel = productsService.update(ProductMapper.toModel(id, body));
     ProductResponseType respType = ProductMapper.toType(respModel);
     ResponseEntity<ResponseType> resp = HttpUtil.responseOk(respType);
-    log.info(Const.LOG_UPDATE_RESPONSE, resp.getBody());
+    log.infoPattern("update", "response: {}", resp.getBody());
     return resp;
   }
 
@@ -128,9 +103,9 @@ public class ProductsController {
   public void delete(
       @PathVariable(value = "id") Long id) {
 
-    log.info(Const.LOG_DELETE_PARAMS, id);
+    log.infoPattern("delete", "params: id:{}", id);
     productsService.delete(ProductModel.builder().id(id).build());
-    log.info(Const.LOG_DELETE_RESPONSE);
+    log.infoPattern("delete", "response: VOID");
   }
 
 }

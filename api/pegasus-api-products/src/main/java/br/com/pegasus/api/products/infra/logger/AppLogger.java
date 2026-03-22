@@ -1,10 +1,11 @@
-package br.com.pegasus.web.portal.logger;
+package br.com.pegasus.api.products.infra.logger;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.message.ParameterizedMessage;
 
 @Log4j2
 public class AppLogger {
+
   private final String className;
 
   public AppLogger(Class<?> c) {
@@ -19,7 +20,7 @@ public class AppLogger {
     log.warn(message, params);
   }
 
-  public void erro(String message, Object... params) {
+  public void error(String message, Object... params) {
     log.error(message, params);
   }
 
@@ -53,5 +54,14 @@ public class AppLogger {
     log.info(message, args);
   }
 
+  public void warnPattern(String methodName, String patternParams, Object... args) {
+    String message = ParameterizedMessage.format("{}::{}::{}", new Object[]{className, methodName, patternParams});
+    log.warn(message, args);
+  }
+
+  public void errorPattern(String methodName, String patternParams, Object... args) {
+    String message = ParameterizedMessage.format("{}::{}::{}", new Object[]{className, methodName, patternParams});
+    log.error(message, args);
+  }
 
 }

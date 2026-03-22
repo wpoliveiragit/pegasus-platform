@@ -8,9 +8,7 @@ import br.com.pegasus.web.portal.model.RequestModel;
 import br.com.pegasus.web.portal.service.port.ProductServicePort;
 import br.com.pegasus.web.portal.type.ProductCreateBodyType;
 import br.com.pegasus.web.portal.type.ProductUpdateRequestType;
-import br.com.pegasus.web.portal.util.ConstUtil;
 import br.com.pegasus.web.portal.util.MethodUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +70,7 @@ public class ProductService implements ProductServicePort {
     Integer size = inModel.getSize();
 
     try {
-      log.infoPattern("findById", "restTemplate::request: url:{}, page:{}, size:{}", url.getProductsPage(), page, size);
+      log.infoPattern("findAll", "restTemplate::request: url:{}, page:{}, size:{}", url.getProductsPage(), page, size);
       ResponseEntity<Object> respObj = restTemplate.getForEntity(url.getProductsPage(), Object.class, page, size);
       String respJson = MethodUtil.toPrettyJson(respObj.getBody());
       log.infoPattern("findAll", "restTemplate::response {}", respJson);

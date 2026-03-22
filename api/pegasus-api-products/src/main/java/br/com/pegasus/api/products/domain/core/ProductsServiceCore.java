@@ -1,5 +1,6 @@
 package br.com.pegasus.api.products.domain.core;
 
+import br.com.pegasus.api.products.domain.adapter.AppLoggerAdapter;
 import br.com.pegasus.api.products.domain.adapter.ProductsRepositoryAdapter;
 import br.com.pegasus.api.products.domain.adapter.ToolBoxAdapter;
 import br.com.pegasus.api.products.domain.exception.BusinessException;
@@ -7,9 +8,7 @@ import br.com.pegasus.api.products.domain.model.PaginationModel;
 import br.com.pegasus.api.products.domain.model.ProductModel;
 import br.com.pegasus.api.products.domain.model.ProductPageModel;
 import br.com.pegasus.api.products.domain.port.ProductsServicePort;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 public class ProductsServiceCore implements ProductsServicePort {
 
   private static class Const {
@@ -34,9 +33,11 @@ public class ProductsServiceCore implements ProductsServicePort {
   }
 
   private final ProductsRepositoryAdapter repo;
+  private final AppLoggerAdapter log;
 
   public ProductsServiceCore(ToolBoxAdapter toolBox) {
     this.repo = toolBox.getProductsRepository();
+    this.log = toolBox.getAppLoggerAdapter(ProductsServiceCore.class);
   }
 
   @Override

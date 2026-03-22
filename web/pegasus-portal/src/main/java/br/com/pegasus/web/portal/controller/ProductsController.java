@@ -26,7 +26,7 @@ public class ProductsController {
   public String callService(RedirectAttributes webModel) {
     log.infoPattern("callService", "params: VOID");
     webModel.addFlashAttribute("response", productService.callService(RequestModel.builder().build()));
-    log.infoPattern("callService", "response: {}");
+    log.infoPattern("callService", "response: {}", webModel.getFlashAttributes());
     return responsePath;
   }
 
@@ -37,7 +37,7 @@ public class ProductsController {
     log.infoPattern("findById", "params: id:{}", id, webModel);
     webModel.addFlashAttribute("selectedProduct", productService.findById(//
         RequestModel.builder().product(ProductModel.builder().id(id).build()).build()));
-    log.infoPattern("findById", "response: {}", webModel);
+    log.infoPattern("findById", "response: {}", webModel.getFlashAttributes());
     return responsePath;
   }
 
@@ -49,7 +49,7 @@ public class ProductsController {
     log.infoPattern("findAll", "params: page:{}, size:{}", page, size);
     webModel.addFlashAttribute("pageResponse", productService.findAll(//
         RequestModel.builder().page(page).size(size).build()));
-    log.infoPattern("findAll", "response: {}", webModel);
+    log.infoPattern("findAll", "response: {}", webModel.getFlashAttributes());
     return responsePath;
   }
 

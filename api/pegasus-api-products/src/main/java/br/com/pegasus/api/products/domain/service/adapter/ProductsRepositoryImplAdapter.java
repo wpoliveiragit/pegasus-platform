@@ -4,13 +4,13 @@ import br.com.pegasus.api.products.domain.adapter.ProductsRepositoryAdapter;
 import br.com.pegasus.api.products.domain.model.PaginationModel;
 import br.com.pegasus.api.products.domain.model.ProductModel;
 import br.com.pegasus.api.products.domain.model.ProductPageModel;
+import br.com.pegasus.api.products.infra.logger.AppLogger;
 import br.com.pegasus.api.products.infra.mapper.PageMapper;
 import br.com.pegasus.api.products.infra.mapper.ProductMapper;
 import br.com.pegasus.api.products.infra.repository.ProductsRepository;
 import br.com.pegasus.api.products.infra.repository.entity.ProductEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +18,11 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-@Log4j2
 @Component
 @RequiredArgsConstructor
 public class ProductsRepositoryImplAdapter implements ProductsRepositoryAdapter {
+
+  private final AppLogger log = new AppLogger(ProductsRepositoryImplAdapter.class);
 
   private static class Const {
     private static final String CLASS_NAME = ProductsRepositoryImplAdapter.class.getSimpleName();
@@ -61,41 +62,41 @@ public class ProductsRepositoryImplAdapter implements ProductsRepositoryAdapter 
 
   @Override
   public Optional<ProductModel> findById(ProductModel model) {
-    log.info(Const.LOG_FIND_BY_ID_PARAMS, model);
+    log.infoPattern("findById","params: {}", model);
     Optional<ProductModel> resp = repo.findById(model.getId()).map(ProductMapper::toModel);
-    log.info(Const.LOG_FIND_BY_ID_RESPONSE, resp);
+    log.infoPattern("findById","response: {}", resp);
     return resp;
   }
 
   @Override
   public Optional<ProductModel> findByName(ProductModel model) {
-    log.info(Const.LOG_FIND_BY_NAME_PARAMS, model);
+    log.infoPattern("findByName","params: {}", model);
     Optional<ProductModel> resp = repo.findByName(model.getName()).map(ProductMapper::toModel);
-    log.info(Const.LOG_FIND_BY_NAME_RESPONSE, resp);
+    log.infoPattern("findByName","response: {}", resp);
     return resp;
   }
 
   @Override
   public ProductPageModel findAll(PaginationModel model) {
-    log.info(Const.LOG_FIND_ALL_PARAMS, model);
+    log.infoPattern("findAll","params: {}", model);
     ProductPageModel resp = PageMapper.toModel(repo.findAll(PageRequest.of(model.getPage(), model.getSize())));
-    log.info(Const.LOG_FIND_ALL_RESPONSE, resp);
+    log.infoPattern("findAll","response: {}", resp);
     return resp;
   }
 
   @Override
   public ProductModel save(ProductModel model) {
-    log.info(Const.LOG_SAVE_PARAMS, model);
+    log.infoPattern("save","params: {}", model);
     ProductModel resp = ProductMapper.toModel(repo.save(ProductMapper.toEntity(model)));
-    log.info(Const.LOG_SAVE_RESPONSE, resp);
+    log.infoPattern("save","response: {}", resp);
     return resp;
   }
 
   @Override
   public void deleteById(ProductModel model) {
-    log.info(Const.LOG_DELETE_PARAMS, model);
+    log.infoPattern("deleteById","params: {}", model);
     repo.deleteById(model.getId());
-    log.info(Const.LOG_DELETE_RESPONSE);
+    log.infoPattern("deleteById","response: VOID");
   }
 
 }
